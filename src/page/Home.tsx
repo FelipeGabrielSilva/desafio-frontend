@@ -13,7 +13,7 @@ const Home: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#F6F6F6"
+          backgroundColor: "#F6F6F6",
         }}
       >
         <Cabecalho />
