@@ -1,6 +1,7 @@
 import type React from "react";
 import Cabecalho from "../component/Cabecalho";
 import { Button, Card, Flex, Space } from "antd";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
   return (
@@ -31,8 +32,13 @@ const Home: React.FC = () => {
               direction="horizontal"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <Button>Cadastrar</Button>
-              <Button>Tabela</Button>
+              <Link to="/funcionario">
+                <Button>Cadastrar</Button>
+              </Link>
+
+              <Link to="/tabela/funcionario">
+                <Button>Tabela</Button>
+              </Link>
             </Space>
           </Card>
 
@@ -41,8 +47,12 @@ const Home: React.FC = () => {
               direction="horizontal"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <Button>Cadastrar</Button>
-              <Button>Tabela</Button>
+              <Link to="/veiculo">
+                <Button>Cadastrar</Button>
+              </Link>
+              <Link to="/tabela/veiculo">
+                <Button>Tabela</Button>
+              </Link>
             </Space>
           </Card>
 
@@ -55,8 +65,12 @@ const Home: React.FC = () => {
               direction="horizontal"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <Button>Cadastrar</Button>
-              <Button>Tabela</Button>
+              <Link to="/registro-viagem">
+                <Button>Cadastrar</Button>
+              </Link>
+              <Link to="/tabela/registro-viagem">
+                <Button>Tabela</Button>
+              </Link>
             </Space>
           </Card>
         </Flex>
