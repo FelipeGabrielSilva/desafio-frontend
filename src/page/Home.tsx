@@ -1,7 +1,9 @@
+import { Button, Card, Flex, Space, Typography } from "antd";
 import type React from "react";
-import Cabecalho from "../component/Cabecalho";
-import { Button, Card, Flex, Space } from "antd";
 import { Link } from "react-router-dom";
+import Cabecalho from "../component/Cabecalho";
+
+const { Text } = Typography;
 
 const Home: React.FC = () => {
   return (
@@ -27,49 +29,109 @@ const Home: React.FC = () => {
             height: "100%",
           }}
         >
-          <Card title="Funcionário" variant="borderless" style={{ width: 300 }}>
+          <Card
+            title="Viagem"
+            variant="borderless"
+            style={{
+              width: 370,
+              height: 250,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ flex: 1, padding: "16px 0" }}>
+              <Text style={{ textAlign: "left", display: "block" }}>
+                Painel de controle para gerenciamento de viagens com ações
+                rápidas:
+              </Text>
+            </div>
             <Space
               direction="horizontal"
-              style={{ display: "flex", justifyContent: "space-between" }}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingTop: 24,
+                marginTop: "auto",
+              }}
+              wrap={true}
             >
-              <Link to="/funcionario">
-                <Button>Cadastrar</Button>
+              <Link to="/registro-viagem/saida">
+                <Button size="large">Registrar Saída</Button>
               </Link>
-
-              <Link to="/tabela/funcionario">
-                <Button>Tabela</Button>
+              <Link to="/registro-viagem/retorno">
+                <Button size="large">Registrar Retorno</Button>
               </Link>
-            </Space>
-          </Card>
-
-          <Card title="Veículo" variant="borderless" style={{ width: 300 }}>
-            <Space
-              direction="horizontal"
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Link to="/veiculo">
-                <Button>Cadastrar</Button>
-              </Link>
-              <Link to="/tabela/veiculo">
-                <Button>Tabela</Button>
+              <Link to="/tabela/registro-viagem">
+                <Button size="large">Tabela</Button>
               </Link>
             </Space>
           </Card>
 
           <Card
-            title="Registro de Viagem"
+            title="Funcionário"
             variant="borderless"
-            style={{ width: 300 }}
+            style={{
+              width: 370,
+              height: 250,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
           >
+            <div style={{ flex: 1, padding: "16px 0" }}>
+              <Text style={{ textAlign: "left", display: "block" }}>
+                Painel para gestão de colaboradores com acesso:
+              </Text>
+            </div>
             <Space
               direction="horizontal"
-              style={{ display: "flex", justifyContent: "space-between" }}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingTop: 24,
+                marginTop: "auto",
+              }}
             >
-              <Link to="/registro-viagem">
-                <Button>Cadastrar</Button>
+              <Link to="/funcionario">
+                <Button size="large">Cadastrar</Button>
               </Link>
-              <Link to="/tabela/registro-viagem">
-                <Button>Tabela</Button>
+              <Link to="/tabela/funcionario">
+                <Button size="large">Tabela</Button>
+              </Link>
+            </Space>
+          </Card>
+
+          <Card
+            title="Veículo"
+            variant="borderless"
+            style={{
+              width: 370,
+              height: 250,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ flex: 1, padding: "16px 0" }}>
+              <Text style={{ textAlign: "left", display: "block" }}>
+                Painel de administração de frota contendo:
+              </Text>
+            </div>
+            <Space
+              direction="horizontal"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingTop: 24,
+                marginTop: "auto",
+              }}
+            >
+              <Link to="/veiculo">
+                <Button size="large">Cadastrar</Button>
+              </Link>
+              <Link to="/tabela/veiculo">
+                <Button size="large">Tabela</Button>
               </Link>
             </Space>
           </Card>
