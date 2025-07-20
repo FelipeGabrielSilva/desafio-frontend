@@ -1,22 +1,46 @@
 import { Input, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
+import { useState } from "react";
 import Cabecalho from "../../component/Cabecalho";
-import { veiculoService } from "../../service/veiculoService";
-import { CriarVeiculoDto } from "../../dto/CriarVeiculoDto";
+import { CriarRetornoDto } from "../../dto/CriarRetornoDto";
+import { registroViagemService } from "../../service/registroViagemService";
 
-const CVeiculo: React.FC = () => {
+const validate = (f: CriarRetornoDto) => {
+  const errors: any = {};
+
+  if (!f.placa) {
+    errors.placa = "Obrigatório";
+  }
+
+  return errors;
+};
+
+const CRetornoViagem: React.FC = () => {
+  const [submit, setSubmit] = useState<boolean>(false);
+
   const formik = useFormik({
     initialValues: {
       placa: "",
-      marca: "",
-      modelo: "",
     },
-    onSubmit: async (values: CriarVeiculoDto) => {
-      let res = await veiculoService.post(values);
-      console.log(res);
+    validate,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async (values: CriarRetornoDto) => {
+      try {
+        let res = await registroViagemService.postRetorno(values);
+        console.log(res);
+      } catch (error) {
+        console.error("Erro ao criar registro:", error);
+      }
     },
   });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmit(true);
+    formik.handleSubmit(e);
+  };
 
   return (
     <div
@@ -42,7 +66,7 @@ const CVeiculo: React.FC = () => {
         }}
       >
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={handleSubmit}
           style={{
             display: "flex",
             width: "auto",
@@ -56,38 +80,16 @@ const CVeiculo: React.FC = () => {
             <Input
               id="placa"
               name="placa"
-              type="placa"
-              placeholder="Ex: ABC1234"
+              type="text"
               style={{ width: "400px" }}
               onChange={formik.handleChange}
               value={formik.values.placa}
             />
-          </Space>
-
-          <Space direction="vertical">
-            <label>Marca:</label>
-            <Input
-              width={280}
-              id="marca"
-              name="marca"
-              type="marca"
-              style={{ width: "400px" }}
-              onChange={formik.handleChange}
-              value={formik.values.marca}
-            />
-          </Space>
-
-          <Space direction="vertical">
-            <label>Modelo:</label>
-            <Input
-              width={280}
-              id="modelo"
-              name="modelo"
-              type="modelo"
-              style={{ width: "400px" }}
-              onChange={formik.handleChange}
-              value={formik.values.modelo}
-            />
+            {submit && formik.errors.placa ? (
+              <p style={{ color: "red", fontSize: "12px" }}>
+                {formik.errors.placa}
+              </p>
+            ) : null}
           </Space>
 
           <button type="submit" style={{ width: "15%" }}>
@@ -99,4 +101,4 @@ const CVeiculo: React.FC = () => {
   );
 };
 
-export default CVeiculo;
+export default CRetornoViagem;

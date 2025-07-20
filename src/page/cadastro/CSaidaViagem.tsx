@@ -1,13 +1,14 @@
+import Cabecalho from "../../component/Cabecalho";
 import { DatePicker, Input, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
-import { useEffect, useState } from "react";
-import Cabecalho from "../../component/Cabecalho";
-import { CriarRegistroDto } from "../../dto/CriarRegistroDto";
+import { useEffect, useMemo, useState } from "react";
+import { CriarSaidaDto } from "../../dto/CriarSaidaDto";
 import { Funcionario } from "../../interface/Funcionario";
 import { funcionarioService } from "../../service/funcionarioService";
+import { registroViagemService } from "../../service/registroViagemService";
 
-const validate = (f: CriarRegistroDto) => {
+const validate = (f: CriarSaidaDto) => {
   const errors: any = {};
 
   if (!f.placa_veiculo) {
@@ -33,7 +34,7 @@ const validate = (f: CriarRegistroDto) => {
   return errors;
 };
 
-const CRegistroViagem: React.FC = () => {
+const CSaidaViagem: React.FC = () => {
   const [submit, setSubmit] = useState<boolean>(false);
   const [motorista, setMotorista] = useState<Funcionario[]>([]);
 
@@ -50,6 +51,13 @@ const CRegistroViagem: React.FC = () => {
     loadMotoristas();
   }, []);
 
+  const opcoesMotorista = useMemo(() => {
+    return motorista.map((m) => ({
+      label: m.nome,
+      value: m.id,
+    }));
+  }, [motorista]);
+
   const formik = useFormik({
     initialValues: {
       placa_veiculo: "",
@@ -61,10 +69,11 @@ const CRegistroViagem: React.FC = () => {
     validate,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: async (values) => {
+    onSubmit: async (values: CriarSaidaDto) => {
+      console.log(values);
       try {
-        // await registroViagemService.create(values);
-        alert(JSON.stringify(values, null, 2));
+        let res = await registroViagemService.postSaida(values);
+        console.log(res);
       } catch (error) {
         console.error("Erro ao criar registro:", error);
       }
@@ -131,7 +140,7 @@ const CRegistroViagem: React.FC = () => {
             <label>Motorista:</label>
             <Select
               id="id_motorista"
-              options={motorista}
+              options={opcoesMotorista}
               style={{ width: "400px" }}
               onChange={(value) => formik.setFieldValue("id_motorista", value)}
               value={formik.values.id_motorista}
@@ -148,7 +157,7 @@ const CRegistroViagem: React.FC = () => {
             <DatePicker
               showTime
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={(date) => formik.setFieldValue("saida", date)}
+              onChange={(date) => formik.setFieldValue("saida", date.toDate())}
               style={{ width: "400px" }}
             />
           </Space>
@@ -196,4 +205,4 @@ const CRegistroViagem: React.FC = () => {
   );
 };
 
-export default CRegistroViagem;
+export default CSaidaViagem;

@@ -1,7 +1,7 @@
 import type { Categoria } from "../enum/Categoria";
 
 export interface Funcionario {
-  number?: IdleDeadline;
+  id?: number;
   nome: string;
   email: string;
   cnh: string;

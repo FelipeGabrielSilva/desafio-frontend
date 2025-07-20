@@ -7,6 +7,7 @@ import { getEnumOptions } from "../../hook/getEnum";
 import { Funcionario } from "../../interface/Funcionario";
 import { useState } from "react";
 import { funcionarioService } from "../../service/funcionarioService";
+import { CriarFuncionarioDto } from "../../dto/CriarFuncionarioDto";
 
 const validate = (f: Funcionario) => {
   const errors: any = {};
@@ -51,9 +52,9 @@ const CFuncionario: React.FC = () => {
     validate,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      await funcionarioService.getAll();
+    onSubmit: async (values: CriarFuncionarioDto) => {
+      let res = await funcionarioService.post(values);
+      console.log(res);
     },
   });
 
