@@ -1,48 +1,24 @@
 import type { TableProps } from "antd";
-import { Table } from "antd";
+import { Button, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Funcionario } from "../../interface/Funcionario";
-import { funcionarioService } from "../../service/funcionarioService";
 import Cabecalho from "../../component/Cabecalho";
+import { formatarData } from "../../hook/formatarData";
+import { Veiculo } from "../../interface/Veiculo";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { veiculoService } from "../../service/veiculoService";
+import { useNavigate } from "react-router";
 
-const columns: TableProps<Funcionario>["columns"] = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "NOME",
-    dataIndex: "nome",
-    key: "nome",
-  },
-  {
-    title: "E-MAIL",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "CNH",
-    key: "cnh",
-    dataIndex: "cnh",
-  },
-  {
-    title: "CATEGORIA",
-    key: "categoria",
-    dataIndex: "categoria",
-  },
-];
-
-const TFuncionario: React.FC = () => {
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+const TVeiculo: React.FC = () => {
+  const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loadFuncionarios = async () => {
+    const loadVeiculos = async () => {
       try {
         setLoading(true);
-        const data = await funcionarioService.getAll();
-        setFuncionarios(data);
+        const data = await veiculoService.getAll();
+        setVeiculos(data);
       } catch (error) {
         console.error("Erro ao carregar funcionários:", error);
       } finally {
@@ -50,26 +26,77 @@ const TFuncionario: React.FC = () => {
       }
     };
 
-    loadFuncionarios();
+    loadVeiculos();
   }, []);
+
+  const paginaAtualizar = (id: number) => {
+    navigate(`/veiculo/${id}`);
+  };
+
+  const columns: TableProps<Veiculo>["columns"] = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "PLACA",
+      dataIndex: "placa",
+      key: "placa",
+    },
+    {
+      title: "MODELO",
+      dataIndex: "modelo",
+      key: "modelo",
+    },
+    {
+      title: "STATUS",
+      key: "status",
+      dataIndex: "status",
+    },
+    {
+      title: "CRIADO",
+      key: "criadoEm",
+      dataIndex: "criadoEm",
+      render: (criadoEm) => <p>{formatarData(criadoEm)}</p>,
+    },
+    {
+      title: "ATUALIZADO",
+      key: "atualizadoEm",
+      dataIndex: "atualizadoEm",
+      render: (atualizadoEm) => <p>{formatarData(atualizadoEm)}</p>,
+    },
+    {
+      title: "Açoes",
+      render: (_, record) => (
+        <Space>
+          <Button onClick={() => paginaAtualizar(record.id!)}>
+            <EditOutlined />
+          </Button>
+          <Button danger onClick={() => paginaAtualizar(record.id!)}>
+            <DeleteOutlined />
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div
       style={{
-        margin: 0,
-        padding: 0,
-        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        minHeight: "100vh",
         backgroundColor: "#F6F6F6",
+        gap: "40px",
       }}
     >
       <Cabecalho />
 
-      <Table<Funcionario>
+      <Table<Veiculo>
         columns={columns}
-        dataSource={funcionarios}
+        dataSource={veiculos}
         loading={loading}
         rowKey="id"
       />
@@ -77,4 +104,4 @@ const TFuncionario: React.FC = () => {
   );
 };
 
-export default TFuncionario;
+export default TVeiculo;

@@ -1,8 +1,6 @@
 import type { TableProps } from "antd";
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Funcionario } from "../../interface/Funcionario";
-import { funcionarioService } from "../../service/funcionarioService";
 import Cabecalho from "../../component/Cabecalho";
 import { formatarData } from "../../hook/formatarData";
 import { RegistroViagem } from "../../interface/RegistroViagem";
@@ -67,13 +65,12 @@ const TRegistroViagem: React.FC = () => {
   return (
     <div
       style={{
-        margin: 0,
-        padding: 0,
-        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        minHeight: "100vh",
         backgroundColor: "#F6F6F6",
+        gap: "40px",
       }}
     >
       <Cabecalho />
