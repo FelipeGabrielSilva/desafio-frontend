@@ -1,30 +1,28 @@
-import { Image, Typography } from "antd";
 import type React from "react";
-import { Link } from "react-router-dom";
-
-const { Text } = Typography;
+import Drop from "./Drop";
+import DropViagem from "./DropViagem";
 
 const Cabecalho: React.FC = () => {
   return (
     <div
       style={{
+        height: "80px !important",
         display: "flex",
         width: "100%",
         justifyContent: "center",
         gap: "80px",
         alignItems: "center",
-        height: "80px",
-        background: "#C4C4C4",
+        background: "#693382",
       }}
     >
-      <Link to="/">
+      <a href="/">
         <img
           src="src\img\logo.png"
-          alt="A description of the image"
+          alt="Logo da empresa"
           width="100"
           height="70"
         />
-      </Link>
+      </a>
 
       <div
         style={{
@@ -35,39 +33,9 @@ const Cabecalho: React.FC = () => {
           width: "50%",
         }}
       >
-        <Link to="/funcionario">
-          <Text
-            style={{
-              fontSize: "16px",
-            }}
-          >
-            Funcionário
-          </Text>
-        </Link>
-
-        <Link to="/veiculo">
-          <Text
-            style={{
-              fontSize: "16px",
-              textDecoration: "none",
-              textDecorationLine: "none",
-            }}
-          >
-            Veículo
-          </Text>
-        </Link>
-
-        <Link to="/registro-viagem">
-          <Text
-            style={{
-              fontSize: "16px",
-              textDecoration: "none",
-              textDecorationLine: "none",
-            }}
-          >
-            Registro de Viagem
-          </Text>
-        </Link>
+        <Drop pagina="Funcionário" rota="funcionario" />
+        <Drop pagina="Veículo" rota="veiculo" />
+        <DropViagem pagina="Registro Viagem" rota="registro-viagem" />
       </div>
     </div>
   );
