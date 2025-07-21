@@ -91,7 +91,7 @@ const TVeiculo: React.FC = () => {
       render: (atualizadoEm) => <p>{formatarData(atualizadoEm)}</p>,
     },
     {
-      title: "Açoes",
+      title: "AÇÕES",
       render: (_, record) => (
         <Space>
           <Button onClick={() => paginaAtualizar(record.id!)}>
