@@ -1,4 +1,4 @@
-import { Input, message, Select, Space } from "antd";
+import { Input, message, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import Cabecalho from "../../component/Cabecalho";
@@ -45,6 +45,7 @@ const AFuncionario: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [submit, setSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [api, contextHolder] = notification.useNotification();
 
   const formik = useFormik({
     initialValues: {
@@ -56,10 +57,27 @@ const AFuncionario: React.FC = () => {
     validate,
     onSubmit: async (values: UpdateFuncionarioDto) => {
       if (!id) return;
+
       try {
         await funcionarioService.patch(Number(id), values);
-      } catch (error) {
-        console.error(error);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Funcionário "${values.nome}" atualizado com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao atualizar o funcionário.";
+
+        api.error({
+          message: "Erro na atualização de funcionário",
+          description: errorMessage,
+          placement: "topRight",
+        });
       }
     },
   });
@@ -133,6 +151,8 @@ const AFuncionario: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={handleSubmit}
           style={{

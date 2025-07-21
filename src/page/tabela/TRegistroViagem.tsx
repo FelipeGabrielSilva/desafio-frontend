@@ -1,10 +1,12 @@
 import type { TableProps } from "antd";
-import { Table } from "antd";
+import { Space, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import Cabecalho from "../../component/Cabecalho";
 import { formatarData } from "../../hook/formatarData";
 import { RegistroViagem } from "../../interface/RegistroViagem";
 import { registroViagemService } from "../../service/registroViagemService";
+
+const { Title } = Typography;
 
 const columns: TableProps<RegistroViagem>["columns"] = [
   {
@@ -32,7 +34,8 @@ const columns: TableProps<RegistroViagem>["columns"] = [
     title: "RETORNO",
     key: "retorno",
     dataIndex: "retorno",
-    render: (retorno) => <p>{formatarData(retorno)}</p>,
+    render: (retorno) =>
+      retorno ? <p>{formatarData(retorno)}</p> : "Em viagem",
   },
   {
     title: "PASSAGEIROS",
@@ -70,17 +73,24 @@ const TRegistroViagem: React.FC = () => {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F6F6F6",
-        gap: "40px",
       }}
     >
       <Cabecalho />
 
-      <Table<RegistroViagem>
-        columns={columns}
-        dataSource={viagens}
-        loading={loading}
-        rowKey="id"
-      />
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ width: "90%", maxWidth: "1200px", marginTop: "40px" }}
+      >
+        <Title level={2}>Registros de Viagem</Title>
+
+        <Table<RegistroViagem>
+          columns={columns}
+          dataSource={viagens}
+          loading={loading}
+          rowKey="id"
+        />
+      </Space>
     </div>
   );
 };

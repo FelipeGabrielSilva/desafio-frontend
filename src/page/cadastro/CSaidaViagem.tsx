@@ -27,10 +27,6 @@ const validate = (f: CriarSaidaDto) => {
     errors.destino = "Obrigatório";
   }
 
-  if (!f.passageiros) {
-    errors.passageiros = "Obrigatório";
-  }
-
   return errors;
 };
 
@@ -156,6 +152,7 @@ const CSaidaViagem: React.FC = () => {
           <Space direction="vertical">
             <label>Motorista:</label>
             <Select
+              placeholder="Selecione o motorista"
               id="id_motorista"
               options={opcoesMotorista}
               style={{ width: "400px" }}
@@ -172,6 +169,7 @@ const CSaidaViagem: React.FC = () => {
           <Space direction="vertical">
             <label>Data de saída:</label>
             <DatePicker
+              placeholder="Selecione a data de saída"
               showTime
               format="YYYY-MM-DD HH:mm:ss"
               onChange={(date) =>

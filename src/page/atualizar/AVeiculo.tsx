@@ -1,4 +1,4 @@
-import { Input, Select, Space } from "antd";
+import { Input, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -38,6 +38,7 @@ const AVeiculo: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [submit, setSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [api, contextHolder] = notification.useNotification();
 
   const formik = useFormik({
     initialValues: {
@@ -49,10 +50,27 @@ const AVeiculo: React.FC = () => {
     validate,
     onSubmit: async (values: UpdateVeiculoDto) => {
       if (!id) return;
+
       try {
         await veiculoService.patch(Number(id), values);
-      } catch (error) {
-        console.error(error);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Veículo com a placa "${values.placa}" atualizado com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao atualizar o veículo.";
+
+        api.error({
+          message: "Erro na atualização de veículo",
+          description: errorMessage,
+          placement: "topRight",
+        });
       }
     },
   });
@@ -126,6 +144,8 @@ const AVeiculo: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={handleSubmit}
           style={{

@@ -1,31 +1,36 @@
 import type { TableProps } from "antd";
-import { Button, Space, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Space, Table, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 import Cabecalho from "../../component/Cabecalho";
 import { formatarData } from "../../hook/formatarData";
 import { Veiculo } from "../../interface/Veiculo";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { veiculoService } from "../../service/veiculoService";
 import { useNavigate } from "react-router";
+import { Localizacao } from "../../enum/Localizacao";
+
+const { Title } = Typography;
 
 const TVeiculo: React.FC = () => {
   const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadVeiculos = async () => {
-      try {
-        setLoading(true);
-        const data = await veiculoService.getAll();
-        setVeiculos(data);
-      } catch (error) {
-        console.error("Erro ao carregar funcionários:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadVeiculos = async (status?: Localizacao) => {
+    setVeiculos([]);
 
+    try {
+      setLoading(true);
+      const data = await veiculoService.getAll(status);
+      setVeiculos(data);
+    } catch (error) {
+      console.error("Erro ao carregar funcionários:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadVeiculos();
   }, []);
 
@@ -89,17 +94,34 @@ const TVeiculo: React.FC = () => {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F6F6F6",
-        gap: "40px",
       }}
     >
       <Cabecalho />
 
-      <Table<Veiculo>
-        columns={columns}
-        dataSource={veiculos}
-        loading={loading}
-        rowKey="id"
-      />
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ width: "90%", maxWidth: "1200px", marginTop: "40px" }}
+      >
+        <Title level={2}>Veículos</Title>
+
+        <Space style={{ marginBottom: 16 }}>
+          <Button onClick={() => loadVeiculos()}>Mostrar Todos</Button>
+          <Button onClick={() => loadVeiculos(Localizacao.EM_VIAGEM)}>
+            Apenas em Viagem
+          </Button>
+          <Button onClick={() => loadVeiculos(Localizacao.NO_PATIO)}>
+            Apenas no Pátio
+          </Button>
+        </Space>
+
+        <Table<Veiculo>
+          columns={columns}
+          dataSource={veiculos}
+          loading={loading}
+          rowKey="id"
+        />
+      </Space>
     </div>
   );
 };

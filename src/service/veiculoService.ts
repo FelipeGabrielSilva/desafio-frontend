@@ -1,11 +1,18 @@
 import { CriarVeiculoDto } from "../dto/CriarVeiculoDto";
 import { UpdateVeiculoDto } from "../dto/UpdateVeiculoDto";
+import { Localizacao } from "../enum/Localizacao";
 import { api } from "../hook/api";
 import { Veiculo } from "../interface/Veiculo";
 
-export const getAllVeiculo = async (): Promise<Veiculo[]> => {
+export const getAllVeiculo = async (
+  status?: Localizacao
+): Promise<Veiculo[]> => {
   try {
-    const response = await api.get("/veiculos");
+    const response = await api.get("/veiculos", {
+      params: {
+        status: status,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar veiculos:", error);

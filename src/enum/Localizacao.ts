@@ -1,4 +1,4 @@
 export enum Localizacao {
-  NO_PATIO = "NO PATIO",
-  EM_VIAGEM = "EM VIAGEM",
+  NO_PATIO = "NO_PATIO",
+  EM_VIAGEM = "EM_VIAGEM",
 }

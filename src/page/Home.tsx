@@ -34,10 +34,9 @@ const Home: React.FC = () => {
             variant="borderless"
             style={{
               width: 370,
-              height: 250,
+              height: 300,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
             }}
           >
             <div style={{ flex: 1, padding: "16px 0" }}>
@@ -76,7 +75,6 @@ const Home: React.FC = () => {
               height: 250,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
             }}
           >
             <div style={{ flex: 1, padding: "16px 0" }}>
@@ -110,7 +108,6 @@ const Home: React.FC = () => {
               height: 250,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
             }}
           >
             <div style={{ flex: 1, padding: "16px 0" }}>

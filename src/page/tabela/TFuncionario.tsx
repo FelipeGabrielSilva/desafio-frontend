@@ -1,5 +1,5 @@
 import type { TableProps } from "antd";
-import { Button, Space, Table } from "antd";
+import { Button, Space, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import Cabecalho from "../../component/Cabecalho";
 import { formatarData } from "../../hook/formatarData";
@@ -7,6 +7,8 @@ import { Funcionario } from "../../interface/Funcionario";
 import { funcionarioService } from "../../service/funcionarioService";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
+
+const { Title } = Typography;
 
 const TFuncionario: React.FC = () => {
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
@@ -94,29 +96,24 @@ const TFuncionario: React.FC = () => {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F6F6F6",
-        gap: "40px",
       }}
     >
       <Cabecalho />
 
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ width: "100%", maxWidth: "1200px", marginTop: "40px" }}
       >
+        <Title level={2}>Funcionários</Title>
+
         <Table<Funcionario>
           columns={columns}
           dataSource={funcionarios}
           loading={loading}
           rowKey="id"
-          style={{ width: "90%" }}
-          scroll={{ x: 800 }}
         />
-      </div>
+      </Space>
     </div>
   );
 };
