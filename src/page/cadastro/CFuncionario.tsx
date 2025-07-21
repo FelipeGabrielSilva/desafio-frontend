@@ -1,13 +1,12 @@
-import { Input, Select, Space } from "antd";
+import { Input, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
-import type React from "react";
+import React, { useState } from "react";
 import Cabecalho from "../../component/Cabecalho";
+import { CriarFuncionarioDto } from "../../dto/CriarFuncionarioDto";
 import { Categoria } from "../../enum/Categoria";
 import { getEnumOptions } from "../../hook/getEnum";
 import { Funcionario } from "../../interface/Funcionario";
-import { useState } from "react";
 import { funcionarioService } from "../../service/funcionarioService";
-import { CriarFuncionarioDto } from "../../dto/CriarFuncionarioDto";
 
 const validate = (f: Funcionario) => {
   const errors: any = {};
@@ -41,6 +40,7 @@ const validate = (f: Funcionario) => {
 
 const CFuncionario: React.FC = () => {
   const [submit, setSubmit] = useState<boolean>(false);
+  const [api, contextHolder] = notification.useNotification();
 
   const formik = useFormik({
     initialValues: {
@@ -53,8 +53,27 @@ const CFuncionario: React.FC = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values: CriarFuncionarioDto) => {
-      let res = await funcionarioService.post(values);
-      console.log(res);
+      try {
+        await funcionarioService.post(values);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Funcionário "${values.nome}" criado com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao criar o funcionário.";
+
+        api.error({
+          message: "Erro no cadastro de funcionário",
+          description: errorMessage,
+          placement: "topRight",
+        });
+      }
     },
   });
 
@@ -89,6 +108,8 @@ const CFuncionario: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={handleSubmit}
           style={{

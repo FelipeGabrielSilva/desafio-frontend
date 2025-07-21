@@ -1,5 +1,5 @@
 import Cabecalho from "../../component/Cabecalho";
-import { DatePicker, Input, Select, Space } from "antd";
+import { DatePicker, Input, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -37,6 +37,7 @@ const validate = (f: CriarSaidaDto) => {
 const CSaidaViagem: React.FC = () => {
   const [submit, setSubmit] = useState<boolean>(false);
   const [motorista, setMotorista] = useState<Funcionario[]>([]);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const loadMotoristas = async () => {
@@ -70,12 +71,26 @@ const CSaidaViagem: React.FC = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values: CriarSaidaDto) => {
-      console.log(values);
       try {
-        let res = await registroViagemService.postSaida(values);
-        console.log(res);
-      } catch (error) {
-        console.error("Erro ao criar registro:", error);
+        await registroViagemService.postSaida(values);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Saída do veículo com placa "${values.placa_veiculo}" registrada com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao registrar a saída.";
+
+        api.error({
+          message: "Erro no registro de saída",
+          description: errorMessage,
+          placement: "topRight",
+        });
       }
     },
   });
@@ -109,6 +124,8 @@ const CSaidaViagem: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={handleSubmit}
           style={{
@@ -157,7 +174,12 @@ const CSaidaViagem: React.FC = () => {
             <DatePicker
               showTime
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={(date) => formik.setFieldValue("saida", date.toDate())}
+              onChange={(date) =>
+                formik.setFieldValue(
+                  "saida",
+                  date.format("YYYY-MM-DD HH:mm:ss")
+                )
+              }
               style={{ width: "400px" }}
             />
           </Space>

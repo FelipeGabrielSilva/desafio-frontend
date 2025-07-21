@@ -1,4 +1,4 @@
-import { Input, Space } from "antd";
+import { Input, notification, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import Cabecalho from "../../component/Cabecalho";
@@ -6,6 +6,8 @@ import { veiculoService } from "../../service/veiculoService";
 import { CriarVeiculoDto } from "../../dto/CriarVeiculoDto";
 
 const CVeiculo: React.FC = () => {
+  const [api, contextHolder] = notification.useNotification();
+
   const formik = useFormik({
     initialValues: {
       placa: "",
@@ -13,8 +15,27 @@ const CVeiculo: React.FC = () => {
       modelo: "",
     },
     onSubmit: async (values: CriarVeiculoDto) => {
-      let res = await veiculoService.post(values);
-      console.log(res);
+      try {
+        await veiculoService.post(values);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Veículo com a placa "${values.placa}" criado com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao criar o veículo.";
+
+        api.error({
+          message: "Erro no cadastro de veículo",
+          description: errorMessage,
+          placement: "topRight",
+        });
+      }
     },
   });
 
@@ -41,6 +62,8 @@ const CVeiculo: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={formik.handleSubmit}
           style={{

@@ -1,4 +1,4 @@
-import { Input, Space } from "antd";
+import { Input, notification, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import { useState } from "react";
@@ -18,6 +18,7 @@ const validate = (f: CriarRetornoDto) => {
 
 const CRetornoViagem: React.FC = () => {
   const [submit, setSubmit] = useState<boolean>(false);
+  const [api, contextHolder] = notification.useNotification();
 
   const formik = useFormik({
     initialValues: {
@@ -28,10 +29,25 @@ const CRetornoViagem: React.FC = () => {
     validateOnChange: false,
     onSubmit: async (values: CriarRetornoDto) => {
       try {
-        let res = await registroViagemService.postRetorno(values);
-        console.log(res);
-      } catch (error) {
-        console.error("Erro ao criar registro:", error);
+        await registroViagemService.postRetorno(values);
+
+        api.success({
+          message: "Sucesso!",
+          description: `Retorno do veículo com placa "${values.placa}" registrado com sucesso.`,
+          placement: "topRight",
+        });
+
+        formik.resetForm();
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Ocorreu um erro ao registrar o retorno.";
+
+        api.error({
+          message: "Erro no registro de retorno",
+          description: errorMessage,
+          placement: "topRight",
+        });
       }
     },
   });
@@ -65,6 +81,8 @@ const CRetornoViagem: React.FC = () => {
           alignItems: "center",
         }}
       >
+        {contextHolder}
+
         <form
           onSubmit={handleSubmit}
           style={{
