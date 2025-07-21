@@ -1,12 +1,12 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
-import { Button, Space, Table, Typography } from "antd";
+import { Button, notification, Space, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import Cabecalho from "../../component/Cabecalho";
 import { formatarData } from "../../hook/formatarData";
 import { Funcionario } from "../../interface/Funcionario";
 import { funcionarioService } from "../../service/funcionarioService";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router";
 
 const { Title } = Typography;
 
@@ -14,25 +14,44 @@ const TFuncionario: React.FC = () => {
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
+
+  const loadFuncionarios = async () => {
+    try {
+      setLoading(true);
+      const data = await funcionarioService.getAll();
+      setFuncionarios(data);
+    } catch (error) {
+      console.error("Erro ao carregar funcionários:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadFuncionarios = async () => {
-      try {
-        setLoading(true);
-        const data = await funcionarioService.getAll();
-        setFuncionarios(data);
-      } catch (error) {
-        console.error("Erro ao carregar funcionários:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadFuncionarios();
   }, []);
 
   const paginaAtualizar = (id: number) => {
     navigate(`/funcionario/${id}`);
+  };
+
+  const deletar = async (id: number) => {
+    try {
+      await funcionarioService.delete(id);
+
+      loadFuncionarios();
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Ocorreu um erro ao deletar o funcionário.";
+
+      api.error({
+        message: "Erro ao deletar de funcionário",
+        description: errorMessage,
+        placement: "topRight",
+      });
+    }
   };
 
   const columns: TableProps<Funcionario>["columns"] = [
@@ -80,7 +99,7 @@ const TFuncionario: React.FC = () => {
           <Button onClick={() => paginaAtualizar(record.id!)}>
             <EditOutlined />
           </Button>
-          <Button danger onClick={() => paginaAtualizar(record.id!)}>
+          <Button danger onClick={() => deletar(record.id!)}>
             <DeleteOutlined />
           </Button>
         </Space>
@@ -105,6 +124,8 @@ const TFuncionario: React.FC = () => {
         size="large"
         style={{ width: "100%", maxWidth: "1200px", marginTop: "40px" }}
       >
+        {contextHolder}
+
         <Title level={2}>Funcionários</Title>
 
         <Table<Funcionario>

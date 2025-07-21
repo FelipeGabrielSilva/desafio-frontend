@@ -1,15 +1,14 @@
-import { Input, message, notification, Select, Space } from "antd";
+import { Input, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Cabecalho from "../../component/Cabecalho";
+import { UpdateFuncionarioDto } from "../../dto/UpdateFuncionarioDto";
 import { Categoria } from "../../enum/Categoria";
 import { getEnumOptions } from "../../hook/getEnum";
 import { Funcionario } from "../../interface/Funcionario";
-import { useEffect, useState } from "react";
 import { funcionarioService } from "../../service/funcionarioService";
-import { CriarFuncionarioDto } from "../../dto/CriarFuncionarioDto";
-import { UpdateFuncionarioDto } from "../../dto/UpdateFuncionarioDto";
-import { useParams } from "react-router";
 
 const validate = (f: Partial<Funcionario>) => {
   const errors: any = {};

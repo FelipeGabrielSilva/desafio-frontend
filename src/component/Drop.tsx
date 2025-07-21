@@ -1,7 +1,7 @@
+import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps, Space } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-import { DownOutlined } from "@ant-design/icons";
 
 interface DropProps {
   pagina: string;
@@ -23,7 +23,7 @@ const Drop: React.FC<DropProps> = ({ pagina, rota }) => {
   return (
     <Dropdown menu={{ items }}>
       <a onClick={(e) => e.preventDefault()}>
-        <Space style={{color: "white"}}>
+        <Space style={{ color: "white" }}>
           {pagina}
           <DownOutlined />
         </Space>

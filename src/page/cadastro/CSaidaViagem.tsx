@@ -1,8 +1,8 @@
-import Cabecalho from "../../component/Cabecalho";
 import { DatePicker, Input, notification, Select, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
+import Cabecalho from "../../component/Cabecalho";
 import { CriarSaidaDto } from "../../dto/CriarSaidaDto";
 import { Funcionario } from "../../interface/Funcionario";
 import { funcionarioService } from "../../service/funcionarioService";

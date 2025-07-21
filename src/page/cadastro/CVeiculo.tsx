@@ -2,8 +2,8 @@ import { Input, notification, Space } from "antd";
 import { useFormik } from "formik";
 import type React from "react";
 import Cabecalho from "../../component/Cabecalho";
-import { veiculoService } from "../../service/veiculoService";
 import { CriarVeiculoDto } from "../../dto/CriarVeiculoDto";
+import { veiculoService } from "../../service/veiculoService";
 
 const CVeiculo: React.FC = () => {
   const [api, contextHolder] = notification.useNotification();

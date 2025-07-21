@@ -1,7 +1,7 @@
+import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps, Space } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-import { DownOutlined } from "@ant-design/icons";
 
 interface DropProps {
   pagina: string;
