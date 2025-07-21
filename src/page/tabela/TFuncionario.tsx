@@ -81,19 +81,19 @@ const TFuncionario: React.FC = () => {
       dataIndex: "categoria",
     },
     {
-      title: "Criado",
+      title: "CRIADO",
       key: "criadoEm",
       dataIndex: "criadoEm",
       render: (criadoEm) => <p>{formatarData(criadoEm)}</p>,
     },
     {
-      title: "Atualizado",
+      title: "ATUALIZADO",
       key: "atualizadoEm",
       dataIndex: "atualizadoEm",
       render: (atualizadoEm) => <p>{formatarData(atualizadoEm)}</p>,
     },
     {
-      title: "Açoes",
+      title: "AÇÕES",
       render: (_, record) => (
         <Space>
           <Button onClick={() => paginaAtualizar(record.id!)}>
