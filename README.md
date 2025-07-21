@@ -1,69 +1,68 @@
-# React + TypeScript + Vite
+# Desafio Técnico - Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositório contém o código-fonte da aplicação frontend, desenvolvida com React e Vite para o Desafio Técnico.
 
-Currently, two official plugins are available:
+## Tecnologias e Ferramentas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A stack principal utilizada neste projeto inclui:
+* **Biblioteca UI:** [React](https://react.dev/) (v19)
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **Linguagem:** Typescript
+* **Componentes UI:** [Ant Design](https://ant.design/)
+* **Roteamento:** [React Router](https://reactrouter.com/) (v7)
+* **Requisições HTTP:** [Axios](https://axios-http.com/)
+* **Gerenciamento de Formulários:** [Formik](https://formik.org/)
 
-## Expanding the ESLint configuration
+## Dependências e Suas Funções
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* `react` e `react-dom`: Biblioteca principal para a construção da interface de usuário e para renderizar os componentes no DOM do navegador.
+* `antd`: Uma biblioteca de componentes UI para React prontos para uso, acelerando o desenvolvimento.
+* `axios`: Cliente HTTP baseado em Promises para fazer requisições à API de backend de forma simples e eficiente.
+* `react-router-dom`: Biblioteca para gerenciar a navegação e o roteamento da aplicação.
+* `formik`: Facilita a criação e o gerenciamento de formulários em React, controlando o estado, validações e submissões de forma organizada.
+* `date-fns`: Biblioteca para manipulação de datas em JavaScript.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ⚡ Como Executar o Projeto
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Siga os passos abaixo para executar o frontend em sua máquina local.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Pré-requisitos
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* [Node.js](https://nodejs.org/) (versão LTS recomendada)
+* [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Passo a Passo
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/FelipeGabrielSilva/desafio-frontend.git](https://github.com/FelipeGabrielSilva/desafio-frontend.git)
+    cd desafio-frontend
+    ```
+
+2.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
+    *ou, se você usa Yarn:*
+    ```bash
+    yarn install
+    ```
+
+3.  **Configure o ambiente:**
+    Crie um arquivo chamado `.env` na raiz do projeto e configure a URL da sua API de backend. O Vite carrega essas variáveis automaticamente.
+    ```env
+    # URL base da API de backend
+    VITE_API_BASE_URL=http://localhost:8080
+    ```
+
+4.  **Inicie o servidor de desenvolvimento:**
+    ```bash
+    npm run dev
+    ```
+    A aplicação estará disponível em `http://localhost:5173` (ou outra porta indicada no terminal).
+
+5.  **Para gerar uma build de produção:**
+    Este comando criará uma pasta `dist` com os arquivos otimizados para o deploy.
+    ```bash
+    npm run build
+    ```
