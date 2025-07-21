@@ -1,13 +1,13 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
-import { Button, Space, Table, Typography } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { Button, notification, Space, Table, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import Cabecalho from "../../component/Cabecalho";
+import { Localizacao } from "../../enum/Localizacao";
 import { formatarData } from "../../hook/formatarData";
 import { Veiculo } from "../../interface/Veiculo";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { veiculoService } from "../../service/veiculoService";
-import { useNavigate } from "react-router";
-import { Localizacao } from "../../enum/Localizacao";
 
 const { Title } = Typography;
 
@@ -15,6 +15,7 @@ const TVeiculo: React.FC = () => {
   const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   const loadVeiculos = async (status?: Localizacao) => {
     setVeiculos([]);
@@ -36,6 +37,24 @@ const TVeiculo: React.FC = () => {
 
   const paginaAtualizar = (id: number) => {
     navigate(`/veiculo/${id}`);
+  };
+
+  const deletar = async (id: number) => {
+    try {
+      await veiculoService.delete(id);
+
+      loadVeiculos();
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Ocorreu um erro ao deletar o funcionário.";
+
+      api.error({
+        message: "Erro ao deletar de funcionário",
+        description: errorMessage,
+        placement: "topRight",
+      });
+    }
   };
 
   const columns: TableProps<Veiculo>["columns"] = [
@@ -78,7 +97,7 @@ const TVeiculo: React.FC = () => {
           <Button onClick={() => paginaAtualizar(record.id!)}>
             <EditOutlined />
           </Button>
-          <Button danger onClick={() => paginaAtualizar(record.id!)}>
+          <Button danger onClick={() => deletar(record.id!)}>
             <DeleteOutlined />
           </Button>
         </Space>
@@ -103,6 +122,8 @@ const TVeiculo: React.FC = () => {
         size="large"
         style={{ width: "90%", maxWidth: "1200px", marginTop: "40px" }}
       >
+        {contextHolder}
+
         <Title level={2}>Veículos</Title>
 
         <Space style={{ marginBottom: 16 }}>
